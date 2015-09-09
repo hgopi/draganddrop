@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ViGo Learning</title>
+<meta name="description" content="ViGo Learning - Interactive learning website for kids">
+<meta name="keywords" content="kinder garder,kids,study,learn,school,child play,interactive learn">
+<meta name="author" content="ViGo Learning">
+<link rel="stylesheet" href="style/main.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+<!--Boostrap-->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<style>line {stroke: black; stroke-width: 2;}</style>
+</head>
+<body>
+
+	<div class="quiz-container">
+		<h2>Well! It&#x2019;s Quiz Time</h2>
+			<p>Drop the correct name of the objects shown below in the bottom box.</p>
+		<div class="quiz-area">
+			<div class="row">
+				<div class="col-xs-4 col-sm-4 col-md-3 col-lg-3">
+					<img class="quiz-image" src="images\quiz-images\a-aeroplane.png"/>
+				</div>
+				<div class="col-xs-4 col-sm-4 col-md-3 col-lg-3">
+					<img class="quiz-image" src="images\quiz-images\a-apple.png"/>
+				</div>
+				<div class="col-xs-4 col-sm-4 col-md-3 col-lg-3">
+					<img class="quiz-image" src="images\quiz-images\a-animal.png"/>
+				</div>
+				<div class="col-xs-4 col-sm-4 col-md-3 col-lg-3">
+					<img class="quiz-image" src="images\quiz-images\a-ant.png"/>
+				</div>
+				<!--<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+					<img class="quiz-image" src="images\quiz-images\a-anchor.png"/>
+				</div>-->
+			</div>
+			<div class="row">
+				<div class="col-xs-4 col-sm-4 col-md-3 col-lg-3">
+					<div class="drop-area" ondrop="drop(event)" ondragover="allowDrop(event)" data-quiz-q="quiz-aeroplane">
+					</div>
+					<p class="text-danger incorrect hide">Incorrect</p>
+					<p class="text-success correct hide">Correct</p>
+				</div>
+				<div class="col-xs-4 col-sm-4 col-md-3 col-lg-3">
+					<div class="drop-area" ondrop="drop(event)" ondragover="allowDrop(event)" data-quiz-q="quiz-apple">
+					</div>
+					<p class="text-danger incorrect hide">Incorrect</p>
+					<p class="text-success correct hide">Correct</p>
+				</div>
+				<div class="col-xs-4 col-sm-4 col-md-3 col-lg-3">
+					<div class="drop-area" ondrop="drop(event)" ondragover="allowDrop(event)" data-quiz-q="quiz-animals">
+					</div>
+					<p class="text-danger incorrect hide">Incorrect</p>
+					<p class="text-success correct hide">Correct</p>
+				</div>
+				<div class="col-xs-4 col-sm-4 col-md-3 col-lg-3">
+					<div class="drop-area" ondrop="drop(event)" ondragover="allowDrop(event)" data-quiz-q="quiz-ant">
+					</div>
+					<p class="text-danger incorrect hide">Incorrect</p>
+					<p class="text-success correct hide">Correct</p>
+				</div>
+				<!--<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+					<div class="drop-area" ondrop="drop(event)" ondragover="allowDrop(event)">
+				</div>-->
+			</div>
+
+			<div class="card-holder">
+			<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="quiz-card quiz-apple"><img id="quiz-apple" class="img-card" src="images\quiz-images\a-card01.png" draggable="true" ondragstart="drag(event)"/></div>
+				<div class="quiz-card quiz-aeroplane"><img id="quiz-aeroplane" class="img-card" src="images\quiz-images\a-card02.png" draggable="true" ondragstart="drag(event)"/></div>
+				<div class="quiz-card quiz-animals"><img id="quiz-animals" class="img-card" src="images\quiz-images\a-card03.png" draggable="true" ondragstart="drag(event)"/></div>
+				<div class="quiz-card quiz-anchor"><img id="quiz-anchor" class="img-card" src="images\quiz-images\a-card04.png" draggable="true" ondragstart="drag(event)"/></div>
+				<div class="quiz-card quiz-ant"><img id="quiz-ant" class="img-card" src="images\quiz-images\a-card05.png" draggable="true" ondragstart="drag(event)"/></div>
+			</div>
+		</div>
+		</div>
+		</div>
+	
+
+<script>
+
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+    ev.target.style.opacity = '0.4';
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+    checkAnswer(ev.target);	
+}
+function checkAnswer(e) {
+	var q = $(e).find('img').attr('id');
+	var a = $(e).attr('data-quiz-q');
+	var src = $(e).find('img').attr('src');
+	
+	if(q == a) {
+		$(e).css({'border': '2px solid green'});
+		$(e).parent().find('p.incorrect').addClass('hide');
+		$(e).parent().find('p.correct').removeClass('hide');
+	} else {
+		$(e).css({'border': '2px solid red'});
+		$(e).parent().find('p.correct').addClass('hide');
+		$(e).parent().find('p.incorrect').removeClass('hide');
+		$(e).find('img').remove();
+		$('div.card-holder div.row div').filter('div.'+q).append('<img id="' + q +'" class="img-card" src="' + src + '" draggable="true" ondragstart="drag(event)"/>');
+		//$('div.card-holder div.row div:not(:has(img))').append('<img id="' + q +'" class="img-card" src="' + src + '" draggable="true" ondragstart="drag(event)"/>');
+	}
+
+}
+
+</script>
+
+	<div class="footer-navigation">
+		<ul class="navilist">
+			<li><strong>Find More:</strong></li>
+			<li><a href="#" class="active">A</a></li>
+			<li><a href="pageb.html">B</a></li>
+			<li><a href="#">C</a></li>
+			<li><a href="#">D</a></li>
+			<li><a href="#">E</a></li>
+			<li><a href="#">F</a></li>
+			<li><a href="#">G</a></li>
+			<li><a href="#">H</a></li>
+			<li><a href="#">I</a></li>
+			<li><a href="#">J</a></li>
+			<li><a href="#">K</a></li>
+			<li><a href="#">L</a></li>
+			<li><a href="#">M</a></li>
+			<li><a href="#">N</a></li>
+			<li><a href="#">O</a></li>
+			<li><a href="#">P</a></li>
+			<li><a href="#">Q</a></li>
+			<li><a href="#">R</a></li>
+			<li><a href="#">S</a></li>
+			<li><a href="#">T</a></li>
+			<li><a href="#">U</a></li>
+			<li><a href="#">V</a></li>
+			<li><a href="#">W</a></li>
+			<li><a href="#">X</a></li>
+			<li><a href="#">Y</a></li>
+			<li><a href="#">Z</a></li>
+		</ul>
+	</div>
+
+</body>
+		
+</html>
